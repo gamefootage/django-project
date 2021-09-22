@@ -23,5 +23,22 @@
    "files.autoSave": "off",
    "workbench.colorTheme": "Visual Studio Dark",
    "terminal.integrated.gpuAcceleration": "canvas",
-   "editor.defaultFormatter": "HookyQR.beautify"
+"editor.defaultFormatter": "HookyQR.beautify",
+"workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#03fd03",
+    "activityBar.activeBorder": "#8181fe",
+    "activityBar.background": "#03fd03",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#8181fe",
+    "activityBarBadge.foreground": "#15202b",
+    "statusBar.background": "#02cb02",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#03fd03",
+    "titleBar.activeBackground": "#02cb02",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#02cb0299",
+    "titleBar.inactiveForeground": "#e7e7e799"
+},
+"peacock.remoteColor": "#02cb02"
 }
