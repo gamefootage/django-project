@@ -1,11 +1,17 @@
-.carousel-item {
-    height: 45rem;
-    overflow: hidden;
+#homepage-carousel {
+    height: 50vh;
 }
 
-.carousel-item img {
-    position: absolute;
-    width: 100%;
+.carousel-inner {
+    height: 100%;
+}
+
+.carousel-item {
+    height: 100%;
+    overflow: hidden;
+    background-position: top;
+    background-clip: content-box;
+    background-size: cover;
 }
 
 .carousel-caption {
