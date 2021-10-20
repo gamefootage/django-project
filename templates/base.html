@@ -12,6 +12,8 @@
 		{% block core_css %}
 			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" 
 						rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css">
+            <link rel="stylesheet" href="{% static 'css/base.css' %}">
 		{% endblock %}
 
 		{% block extra_css %}
@@ -34,38 +36,68 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Offcanvas navbar</a>
+                    <a class="navbar-brand" href="/">
+                        <img src="{% static 'images/jersey-rewind-logo.png'%}" alt="Jersey Rewind logo" width="80" height="80">
+                    </a>
                     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <div class="offcanvas-header justify-content-center">
+                            <h5 class="offcanvas-title ms-auto" id="offcanvasNavbarLabel">
+                                <img src="{% static 'images/jersey-rewind-logo.png'%}" alt="Jersey Rewind logo" width="100" height="100">
+                            </h5>
+                            <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                        <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                            <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                <hr class="dropdown-divider">
+                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Link</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Collections
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+                                        <li><a class="dropdown-item" href="/collections/nba">NBA Collection</a></li>
+                                        <li><a class="dropdown-item" href="/collections/nfl">NFL Collection</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="/collections">See All Collections</a></li>
+                                    </ul>
+                                </li>
                             </ul>
-                            </li>
-                        </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+                            <form class="d-flex me-3 mt-lg-0 mt-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" />
+                                    <button class="input-group-text">
+                                        <i class="bi bi-search form-control-feedback"></i>
+                                    </button>
+                                </div>                                                     
+                            </form>
+                            <ul class="navbar-nav justify-content-start">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="account-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        My Account
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="account-dropdown">
+                                        {% if request.user.is_authenticated %}
+                                            {% if request.user.is_superuser %}
+                                                <li><a href="" class="dropdown-item">Product Management</a></li>
+                                            {% endif %}
+                                            <li><a href="" class="dropdown-item">My Profile</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="{% url 'account_logout'%}">Log out</a></li>
+                                        {% else %}
+                                            <li><a class="dropdown-item" href="{% url 'account_signup'%}">Register</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'account_login'%}">Login</a></li>
+                                        {% endif%}
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -76,11 +108,13 @@
             <div class="message-container"></div>
         {% endif %}
 
-        {% block page_header %}
-        {% endblock %}
-
-        {% block content %}
-        {% endblock %}
+        <div class="page-content">
+            {% block page_header %}
+            {% endblock %}
+    
+            {% block content %}
+            {% endblock %}
+        </div>
 
         {% block postload_js %}
         {% endblock %}

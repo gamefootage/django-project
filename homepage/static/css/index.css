@@ -1,0 +1,13 @@
+.carousel-item {
+    height: 45rem;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    position: absolute;
+    width: 100%;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.4);
+}
