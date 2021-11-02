@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'homepage',
-    'allauth.socialaccount.providers.google'
+    'allauth.socialaccount.providers.google',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -162,6 +163,22 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+if 'USE_AWS' in os.environ:
+    AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCEKT_NAME = 'jersey-rewind'
+    AWS_S3_REGION_NAME = 'eu-west-1'
+    AWS_S3_DOMAIN = f'{AWS_STORAGE_BUCEKT_NAME}.s3.amazonaws.com'
+
+    STATICFILES_STORAGE = 'custom_storage.StaticStorage'
+    STATICFILES_LOCATION = 'static'
+    MEDIAFILES_STORAGE = 'custom_storage.MediaStorage'
+    MEDIAFILES_LOCATION = 'media'
+
+    STATIC_URL = f'https://{AWS_S3_DOMAIN}/{STATICFILES_LOCATION}'
+    STATIC_URL = f'https://{AWS_S3_DOMAIN}/{MEDIAFILES_LOCATION}'
+
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
