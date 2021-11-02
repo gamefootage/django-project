@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'homepage'
+    'homepage',
+    'allauth.socialaccount.providers.google'
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
-SITE_ID = 1
+SITE_ID = 3
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -91,6 +92,14 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_MIN_LENGTH = 5
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': 
+        { 
+            'SCOPE': ['email'],
+            'AUTH_PARAMS': { 'access_type': 'online' }
+        }
+}
 
 WSGI_APPLICATION = 'jersey_rewind.wsgi.application'
 

@@ -8,3 +8,12 @@ body {
     margin-top: 106px;
     padding: 1rem 3rem;
 }
+
+.errorlist {
+    list-style: none;
+} 
+
+.errorlist li {
+    color: red;
+    font-weight: bold;
+}
