@@ -173,8 +173,9 @@ STATICFILES_DIRS = [
 if 'USE_AWS' in os.environ:
     AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
     AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCEKT_NAME = 'arn:aws:s3:::jersey-rewind'
-    AWS_S3_DOMAIN = f'{AWS_STORAGE_BUCEKT_NAME}.s3.amazonaws.com'
+    AWS_STORAGE_BUCEKT_NAME = 'jersey-rewind'
+    AWS_S3_REGION_NAME = 'eu-west-1'
+    AWS_S3_DOMAIN = f'{AWS_STORAGE_BUCEKT_NAME}.s3-website-{AWS_S3_REGION_NAME}.amazonaws.com'
 
     STATICFILES_STORAGE = 'custom_storage.StaticStorage'
     STATICFILES_LOCATION = 'static'
