@@ -163,27 +163,26 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-
 if 'USE_AWS' in os.environ:
-    AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
-    AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCEKT_NAME = 'jersey-rewind'
     AWS_S3_REGION_NAME = 'eu-west-1'
-    AWS_S3_DOMAIN = f'{AWS_STORAGE_BUCEKT_NAME}.s3-website-{AWS_S3_REGION_NAME}.amazonaws.com'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCEKT_NAME}.s3.amazonaws.com'
 
     STATICFILES_STORAGE = 'custom_storage.StaticStorage'
     STATICFILES_LOCATION = 'static'
     MEDIAFILES_STORAGE = 'custom_storage.MediaStorage'
     MEDIAFILES_LOCATION = 'media'
 
-    STATIC_URL = f'https://{AWS_S3_DOMAIN}/{STATICFILES_LOCATION}'
-    MEDIA_URL = f'https://{AWS_S3_DOMAIN}/{MEDIAFILES_LOCATION}'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}'
+    MEDIA_URL = f'https://{AWS_S3AWS_S3_CUSTOM_DOMAIN_DOMAIN}/{MEDIAFILES_LOCATION}'
 
 
 # Default primary key field type
