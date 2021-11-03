@@ -170,6 +170,9 @@ STATICFILES_DIRS = [
 ]
 
 if 'USE_AWS' in os.environ:
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
     AWS_STORAGE_BUCEKT_NAME = 'jersey-rewind'
     AWS_S3_REGION_NAME = 'eu-west-1'
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
