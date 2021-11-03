@@ -12,7 +12,7 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active" alt="NBA jersey"
-                style="background-image: url('{{ MEDIA_URL }}cover1');">
+                style="background-image: url('{% get_media_prefix %}cover1.jpeg');">
                 <a href="/collections/nba">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Our Retro NBA Collection</h5>
@@ -21,7 +21,7 @@
                 </a>
             </div>
             <div class="carousel-item" alt="NFL jersey"
-                style="background-image: url('{{ MEDIA_URL }}cover2');">
+                style="background-image: url('{% get_media_prefix %}cover2.jpeg');">
                 <a href="/collections/nfl">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Our Retro NFL Collection</h5>
@@ -30,7 +30,7 @@
                 </a>
             </div>
             <div class="carousel-item" alt="Football jersey"
-                style="background-image: url('{{ MEDIA_URL }}cover3');">
+                style="background-image: url('{% get_media_prefix %}cover3.jpeg');">
                 <a href="/collections/football">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Our Retro Football Collection</h5>
