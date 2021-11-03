@@ -1,1 +1,1 @@
-web: gunicorn jersey_rewind.wsgi
+web: gunicorn jersey_rewind.wsgi:application
