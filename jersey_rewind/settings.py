@@ -172,6 +172,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Format taken from CI mini project
 if 'USE_AWS' in os.environ:
+    # Cache Control
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=93457000'
+    }
+
     # AWS Bucket Configuration
     AWS_STORAGE_BUCKET_NAME = 'jersey-rewind'
     AWS_S3_REGION_NAME = 'eu-west-1'
