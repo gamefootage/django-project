@@ -1,0 +1,1 @@
+[{"model":"products.collection","pk":1,"fields":{"name":"nba_collection","display_name":"NBA Collection"}},{"model":"products.collection","pk":2,"fields":{"name":"nfl_collection","display_name":"NFL Collection"}},{"model":"products.collection","pk":3,"fields":{"name":"football_collection","display_name":"Football Collection"}}]
