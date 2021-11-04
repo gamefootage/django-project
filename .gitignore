@@ -10,3 +10,4 @@ node_modules/
 *.pyc
 .editorconfig
 env/
+.env

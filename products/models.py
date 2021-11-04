@@ -5,6 +5,10 @@ from django.contrib.postgres.fields import ArrayField
 from .validator import validate_quantity
 
 
+def year_choices(max_limit):
+    """Return tuple of years ranging from 1874 to the year after current"""
+    return tuple((r,r) for r in range(1874, max_limit))
+
 class Collection(models.Model):
     """Configure Collection model"""
     name = models.CharField(max_length=254)
@@ -37,15 +41,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     quantity = models.JSONField(validators=[validate_quantity])
 
-
-    @staticmethod
-    def year_choices(max_limit):
-        """Return tuple of years ranging from 1874 to the year after current"""
-        return tuple((r,r) for r in range(1874, max_limit))
-
-    upper_limit = datetime.date.today().year+1
     year = models.PositiveSmallIntegerField(
-        choices=year_choices(upper_limit), default=datetime.date.today().year
+        choices=year_choices(datetime.date.today().year+1),
+        default=datetime.date.today().year
     )
 
 

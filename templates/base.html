@@ -81,7 +81,7 @@
                                     <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="account-dropdown">
                                         {% if request.user.is_authenticated %}
                                             {% if request.user.is_superuser %}
-                                                <li><a href="" class="dropdown-item">Product Management</a></li>
+                                                <li><a href="/products" class="dropdown-item">Product Management</a></li>
                                             {% endif %}
                                             <li><a href="{% url 'account_email' %}" class="dropdown-item">My Profile</a></li>
                                             <li>

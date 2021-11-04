@@ -1,5 +1,6 @@
 """Configure views for products app"""
 from django.shortcuts import render
+from django.conf import settings
 from .models import Product
 
 
@@ -8,7 +9,8 @@ def get_all_products(request):
 
     products = Product.objects.all()
     context = {
-        'products': products
+        'products': products,
+        'MEDIA_URL': settings.MEDIA_URL
     }
 
     return render(request, 'products/products.html', context)
