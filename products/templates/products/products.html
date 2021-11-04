@@ -5,17 +5,21 @@
     <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
+{% block container_classes %}p-5{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row">
             {% for product in products %}
-                <div class="col-xl-3 col-lg-4 col-6">
+                <div class="col-xl-3 col-lg-4 col-6 mb-5">
                     <div class="card h-100 border-0">
                         <div class="product-img" style="background-image: url('{{ MEDIA_URL }}{{ product.image_url }}');">
                             <img class="card-img-top" src="{{ MEDIA_URL }}{{ product.image_url }}" alt="{{ product.display_name }}">
                         </div>
                         <div class="card-body">
-                            <p class="mb-0">{{ product.display_name }}</p>
+                            <a class="stretched-link" href="{% url 'get_product' product.pk %}">
+                                <p class="mb-0">{{ product.display_name }}</p>
+                            </a>
                         </div>
                     </div>
                 </div>
