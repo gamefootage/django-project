@@ -3,8 +3,8 @@
     width: 100%;
     background-position: center center;
     background-repeat: no-repeat;
-    overflow: hidden;
     background-size: cover;
+    overflow: hidden;
 }
 
 /* Taken from https://stackoverflow.com/questions/11552380/how-to-automatically-crop-and-center-an-image */
