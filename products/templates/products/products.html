@@ -5,18 +5,48 @@
     <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
-{% block container_classes %}pt-5{% endblock %}
-
 {% block content %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-3">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Choose filter property...</option>
-                    {% for key in filters %}
-                        <option id="filter-{{key}}" name={{key}} value="{{key}}">{{key}}</option>
+        <div class="row pt-5">
+            <div class="col-3 sidebar">
+                <select id="filter-select" class="form-select mb-5" aria-label="Default select example">
+                    <option value="reset" selected>Choose filter property...</option>
+                    {% for key, type in filters %}
+                        <option id="filter-option-{{key}}" name={{key}} value="filter-{{key}}" class="{{type}}">{{key}}</option>
                     {% endfor %}
-                  </select>
+                </select>
+                <div class="filter-menu">
+                    {% for range in field_ranges %}
+                    <div class="filter-{{range.field}} row gap-3 filter" style="display: none;">
+                        <h5 class="col-12">Filter by {{range.field}}</h5>
+                        <div class="col">
+                            <label for="max">Min</label>
+                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                        </div>
+                        <div class="col">
+                            <label for="max">Max</label>
+                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="max_{{range.field}}">
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% for option in field_ranges %}
+                    <div class="filter-{{range.field}} row gap-3" style="display: none;">
+                        <div class="col">
+                            <label for="max">Min</label>
+                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                        </div>
+                        <div class="col">
+                            <label for="max">Max</label>
+                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="max_{{range.field}}">
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row" style="display: none;">
+                        <div class="col-10 d-grid mx-auto">
+                            <button id="add-filter" class="btn btn-primary">Add Filter</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-9">
                 <div class="row">
@@ -38,4 +68,29 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block postload_js %}
+    <script>
+        $("#filter-select").on("change", function() {
+            let $selected = $(this).find("option:selected");
+            let filterInput = $selected.val();
+            if (filterInput !== "reset") {
+                let $target = $(".filter-menu").find("." + filterInput);
+                $(".filter-menu").find(".filter").not("." + filterInput).each((i, el) => {
+                    $(el).hide();
+                });
+                $target.show();
+            } else {
+                $(".filter-menu").find(".filter").each((i, el) => {
+                    $(el).hide();
+                });
+            }
+
+            if ($(".filter-menu").find(".filter:visible").length > 0) {
+                $("#add-filter").closest(".row").show();
+            } else {
+                $("#add-filter").closest(".row").hide();
+            }
+        });
+    </script>
 {% endblock %}

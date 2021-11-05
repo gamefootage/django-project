@@ -10,11 +10,27 @@ def get_all_products(request, *args, query_str=''):
 
     products = Product.objects.all()
     product_fields = (
-        "size",
-        "price",
-        "colours",
-        "year"
+        ("size", "options"),
+        ("price", "range"),
+        ("colours", "options"),
+        ("year", "range")
     )
+    field_ranges = []
+    for field, filter_type in product_fields:
+        if filter_type == "range":
+            (min_val) = products.filter().values_list(field).order_by(field)[0]
+            (max_val) = products.filter().values_list(field).order_by\
+                (f'-{field}')[0]
+            obj = {}
+            print(int(min_val[0]))
+            obj['min_val'] = int(min_val[0])
+            obj['max_val'] = int(max_val[0])
+            obj['field'] = field
+            field_ranges.append(obj)
+
+        # if filter_type == "options":
+
+
 
     if request.GET:
         for key in request.GET:
@@ -28,19 +44,19 @@ def get_all_products(request, *args, query_str=''):
                 products = products.filter(query)
 
 
-    #     if 'collection' in request.GET:
-    #         collection_pk = request.GET['collection']
-    #         if not collection_pk or not collection_pk.isnumeric():
-    #             if query:
-    #                 return redirect(
-    #                     reverse('products'),
-    #                     kwargs={'query_str': query}
-    #                 )
-    #             else:
-    #                 return redirect(reverse('products'))
+        # if 'collection' in request.GET:
+        #     collection_pk = request.GET['collection']
+        #     if not collection_pk or not collection_pk.isnumeric():
+        #         if query:
+        #             return redirect(
+        #                 reverse('products'),
+        #                 kwargs={'query_str': query}
+        #             )
+        #         else:
+        #             return redirect(reverse('products'))
 
-    #         print(collection_pk)
-    #         products = products.filter(collection=collection_pk)
+        #     print(collection_pk)
+        #     products = products.filter(collection=collection_pk)
 
         if 'q' in request.GET:
             query = request.GET['q']
@@ -57,7 +73,8 @@ def get_all_products(request, *args, query_str=''):
         'products': products,
         'MEDIA_URL': settings.MEDIA_URL,
         'search_term': query_str,
-        'filters': product_fields
+        'filters': product_fields,
+        'field_ranges': field_ranges
     }
 
     return render(request, 'products/products.html', context)

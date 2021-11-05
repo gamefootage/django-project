@@ -8,6 +8,11 @@ body {
     margin-top: 106px;
 }
 
+.sidebar {
+    position: fixed;
+    top: 106px;
+}
+
 .errorlist {
     list-style: none;
 } 
