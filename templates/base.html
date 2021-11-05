@@ -49,25 +49,25 @@
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                                    <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}">Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Collections
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                                        <li><a class="dropdown-item" href="/collections/nba">NBA Collection</a></li>
-                                        <li><a class="dropdown-item" href="/collections/nfl">NFL Collection</a></li>
+                                        <li><a class="dropdown-item" href="">NBA Collection</a></li>
+                                        <li><a class="dropdown-item" href="">NFL Collection</a></li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item" href="/collections">See All Collections</a></li>
+                                        <li><a class="dropdown-item" href="">See All Collections</a></li>
                                     </ul>
                                 </li>
                             </ul>
-                            <form class="d-flex me-3 mt-lg-0 mt-2">
+                            <form method="GET" action="{% url 'products' %}" class="d-flex me-3 mt-lg-0 mt-2">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" />
+                                    <input name="q" type="text" class="form-control" value="{{ search_term }}" placeholder="Search" />
                                     <button class="input-group-text">
                                         <i class="bi bi-search form-control-feedback"></i>
                                     </button>
@@ -75,13 +75,13 @@
                             </form>
                             <ul class="navbar-nav justify-content-start me-5">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="account-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="" id="account-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         My Account
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="account-dropdown">
                                         {% if request.user.is_authenticated %}
                                             {% if request.user.is_superuser %}
-                                                <li><a href="/products" class="dropdown-item">Product Management</a></li>
+                                                <li><a href="{% url 'products' %}" class="dropdown-item">Product Management</a></li>
                                             {% endif %}
                                             <li><a href="{% url 'account_email' %}" class="dropdown-item">My Profile</a></li>
                                             <li>
