@@ -49,7 +49,7 @@
                             </h5>
                             <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
-                        <div class="offcanvas-body">
+                        <div class="offcanvas-body px-lg-5">
                             <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
                                 <li class="nav-item">
                                     <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}">Home</a>
@@ -98,6 +98,13 @@
                                     </ul>
                                 </li>
                             </ul>
+                            <a role="button" href="{% url 'view_cart' %}" class="btn p-0 text-dark position-relative">
+                                <i class="bi bi-basket2-fill cart-logo"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                                    {{ product_count }}
+                                    <span class="visually-hidden">product count</span>
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>

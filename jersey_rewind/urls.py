@@ -23,11 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('homepage.urls')),
-    path('products/', include('products.urls'))
-]
-
-
-if settings.DEBUG:
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-    urlpatterns += staticfiles_urlpatterns()
-    print(settings.MEDIA_ROOT)
+    path('products/', include('products.urls')),
+    path('cart/', include('cart.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
