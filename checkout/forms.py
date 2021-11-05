@@ -1,4 +1,6 @@
 """ Define forms in checkout app """
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Fieldset
 from django import forms
 from .models import Order
 
@@ -37,3 +39,60 @@ class OrderForm(forms.ModelForm):
             self.fields[field].widget.attrs['placeholder'] = placeholder
             self.fields[field].widget.attrs['class'] = 'stripe-style-input'
             self.fields[field].label = False
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(
+                'Personal Details',
+                Div(
+                    'full_name',
+                    css_class = 'col'
+                ),
+                Div(
+                    'email',
+                    css_class = 'col'
+                ),
+                Div(
+                    'phone',
+                    css_class = 'col'
+                ),
+                css_class = 'row'
+            ),
+            Fieldset(
+                'Delivery Details',
+                Div(
+                    Div(
+                        Div(
+                            'street_address1',
+                            css_class="col"
+                        ),
+                        Div(
+                            'street_address2',
+                            css_class="col"
+                        ),
+                        Div(
+                            'city',
+                            css_class="col"
+                        ),
+                        css_class="row"
+                    ),
+                    Div(
+                        Div(
+                            'county',
+                            css_class="col"
+                        ),
+                        Div(
+                            'country',
+                            css_class="col"
+                        ),
+                        Div(
+                            'postcode',
+                            css_class="col"
+                        ),
+                        css_class="row"
+                    ),
+                    css_class="col-12"
+                ),
+                css_class="row"
+            ),
+        )

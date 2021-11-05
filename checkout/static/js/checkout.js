@@ -1,9 +1,9 @@
 let stripePublicKey = $("#strp-public-key").text().slice(1, -1)
 let clientSecret = $("#strp-client-secret").text().slice(1, -1)
 
-const stripe = Stripe();
+const stripe = Stripe(stripePublicKey);
 const options = {
-    clientSecret: 'clientSecret',
+    clientSecret: clientSecret,
     appearance: {
         theme: 'flat',
         variables: {
