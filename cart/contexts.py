@@ -24,5 +24,5 @@ def cart_contents(request):
         'cart_items': cart_items,
         'cart_total': cart_total
     }
-    
+
     return context
