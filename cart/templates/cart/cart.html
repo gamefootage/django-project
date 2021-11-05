@@ -16,16 +16,34 @@
                     <ul class="list-group mt-5">
                         {% for item in cart_items %}
                         <div class="list-group-item py-3">
-                            <div class="d-flex w-100 mb-3">
-                                <span class="px-2 flex-fill">Product Info</span>
-                                <span class="px-2">Price</span>
-                                <span class="px-2">Quantity</span>
+                            <div class="row pb-3">
+                                <div class="col-10">
+                                    <span>Product Info</span>
+                                </div>
+                                <div class="col text-center me-3">Price</div>
+                                <div class="col text-center me-3">Quantity</div>
+                                <div class="col"></div>
                             </div>
-                            <div class="d-flex w-100 align-items-center">
-                                <img class="me-4" src="{{item.product.image_url}}" alt="{{product.display_name}}" height="50" width="50">
-                                <a href="{% url 'get_product' item.product.pk %}" class="me-5 flex-fill text-decoration-none">{{ item.product.display_name }}</a>
-                                <span class="float-right px-3">€{{ item.product.price }}</span>
-                                <span class="float-right px-4">{{ item.quantity }}</span>
+                            <div class="row">
+                                <div class="col-10">
+                                    <img class="me-4" src="{{item.product.image_url}}" alt="{{product.display_name}}" height="50" width="50">
+                                    <a href="{% url 'get_product' item.product.pk %}" class="me-5 flex-fill text-decoration-none">{{ item.product.display_name }}</a>
+                                </div>
+                                <div class="col text-center">
+                                    €{{ item.product.price }}
+                                </div>
+                                <div class="col text-center">
+                                    {{ item.quantity }}
+                                </div>
+                                <div class="col text-center">
+                                    <form method="POST" action="{% url 'remove_from_cart' item.product.pk %}">
+                                        {% csrf_token %}
+                                        <input name="redirect_url" value="{{request.path}}" type="text" hidden>
+                                        <button type="submit" class="btn p-0">
+                                            <i class="bi bi-trash2-fill"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}

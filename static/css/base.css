@@ -13,6 +13,10 @@ body {
     top: 106px;
 }
 
+.toast-container {
+    right: 15px;
+}
+
 i.cart-logo {
     font-size: 1.5rem;
 }
