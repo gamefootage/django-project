@@ -8,6 +8,7 @@ from .models import Product
 def get_all_products(request, *args, query_str=''):
     """ View for getting all products """
 
+    active_filters = []
     products = Product.objects.all()
     product_fields = (
         ("size", "options"),
@@ -22,7 +23,6 @@ def get_all_products(request, *args, query_str=''):
             (max_val) = products.filter().values_list(field).order_by\
                 (f'-{field}')[0]
             obj = {}
-            print(int(min_val[0]))
             obj['min_val'] = int(min_val[0])
             obj['max_val'] = int(max_val[0])
             obj['field'] = field
@@ -37,9 +37,11 @@ def get_all_products(request, *args, query_str=''):
             if "__range" in key:
                 val = request.GET.getlist(key)
                 val[:] = [int(x) for x in val]
+                active_filters.append(
+                    [key.split("__")[0], key.split("__")[1], val]
+                )
                 obj = {}
                 obj[key] = val
-                print(obj)
                 query = Q(**obj)
                 products = products.filter(query)
 
@@ -55,7 +57,6 @@ def get_all_products(request, *args, query_str=''):
         #         else:
         #             return redirect(reverse('products'))
 
-        #     print(collection_pk)
         #     products = products.filter(collection=collection_pk)
 
         if 'q' in request.GET:
@@ -74,7 +75,8 @@ def get_all_products(request, *args, query_str=''):
         'MEDIA_URL': settings.MEDIA_URL,
         'search_term': query_str,
         'filters': product_fields,
-        'field_ranges': field_ranges
+        'field_ranges': field_ranges,
+        'active_filters': active_filters
     }
 
     return render(request, 'products/products.html', context)

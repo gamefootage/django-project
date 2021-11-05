@@ -5,50 +5,83 @@
     <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
+{% block extra_js %}
+    <script src="{% static 'js/products.js'%}"></script>
+{% endblock %}
+
+
 {% block content %}
     <div class="container-fluid">
-        <div class="row pt-5">
-            <div class="col-3 sidebar">
+        <div class="row">
+            <div class="col-3 sidebar pt-5">
                 <select id="filter-select" class="form-select mb-5" aria-label="Default select example">
                     <option value="reset" selected>Choose filter property...</option>
                     {% for key, type in filters %}
-                        <option id="filter-option-{{key}}" name={{key}} value="filter-{{key}}" class="{{type}}">{{key}}</option>
+                        <option id="filter-option-{{key}}" name={{type}} value="filter-{{key}}">{{key|capfirst}}</option>
                     {% endfor %}
                 </select>
                 <div class="filter-menu">
-                    {% for range in field_ranges %}
-                    <div class="filter-{{range.field}} row gap-3 filter" style="display: none;">
-                        <h5 class="col-12">Filter by {{range.field}}</h5>
-                        <div class="col">
-                            <label for="max">Min</label>
-                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                        {% for range in field_ranges %}
+                        <div class="filter-{{range.field}} row gap-4 filter border-bottom border-dark pb-5" style="display: none;">
+                            <h5 class="col-12 border-bottom border-dark pb-3">Filter by {{range.field}}</h5>
+                            <div class="col">
+                                <label for="max">Min</label>
+                                <div class="input-group">
+                                    {% if range.field == 'price' %}
+                                    <span class="input-group-text">€</span>
+                                    {% endif %}
+                                    <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="max">Max</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">€</span>
+                                    <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                                </div>
+                            </div>
                         </div>
-                        <div class="col">
-                            <label for="max">Max</label>
-                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="max_{{range.field}}">
-                        </div>
-                    </div>
                     {% endfor %}
                     {% for option in field_ranges %}
-                    <div class="filter-{{range.field}} row gap-3" style="display: none;">
-                        <div class="col">
-                            <label for="max">Min</label>
-                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                        <div class="filter-{{range.field}} row gap-3" style="display: none;">
+                            <div class="col">
+                                <label for="max">Min</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">€</span>
+                                    <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="max">Max</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">€</span>
+                                    <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
+                                </div>
+                            </div>
                         </div>
-                        <div class="col">
-                            <label for="max">Max</label>
-                            <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="max_{{range.field}}">
-                        </div>
-                    </div>
                     {% endfor %}
-                    <div class="row" style="display: none;">
+                    <div class="row mt-5" style="display: none;">
                         <div class="col-10 d-grid mx-auto">
-                            <button id="add-filter" class="btn btn-primary">Add Filter</button>
+                            <button id="add-filter" class="btn btn-primary">Apply Filter</button>
                         </div>
                     </div>
+                    {% if active_filters|length > 0 %}
+                        <h5 class="mt-5">Active Filters</h5>
+                        <div class="list-group">
+                            {% for field, type, val in active_filters %}
+                                <div class="list-group-item">
+                                    <span class="fw-bold">{{ field|capfirst }}:</span> <span class="fw-light">{{val|first}} to {{val|last}}</span>
+                                    <button type="button" class="remove-filter btn-close float-end ms-3" data-filter="{{field}}__{{type}}" aria-label="Close"></button>
+                                    <button type="button" class="edit-filter btn float-end p-0 text-muted" aria-label="Edit" data-field="{{field}}" data-type="{{type}}" data-value="{{val|join:','}}">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-9 pt-5 offset-3">
                 <div class="row">
                     {% for product in products %}
                         <div class="col-lg-3 col-6 mb-5">
@@ -68,29 +101,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-{% block postload_js %}
-    <script>
-        $("#filter-select").on("change", function() {
-            let $selected = $(this).find("option:selected");
-            let filterInput = $selected.val();
-            if (filterInput !== "reset") {
-                let $target = $(".filter-menu").find("." + filterInput);
-                $(".filter-menu").find(".filter").not("." + filterInput).each((i, el) => {
-                    $(el).hide();
-                });
-                $target.show();
-            } else {
-                $(".filter-menu").find(".filter").each((i, el) => {
-                    $(el).hide();
-                });
-            }
-
-            if ($(".filter-menu").find(".filter:visible").length > 0) {
-                $("#add-filter").closest(".row").show();
-            } else {
-                $("#add-filter").closest(".row").hide();
-            }
-        });
-    </script>
 {% endblock %}
