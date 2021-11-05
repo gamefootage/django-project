@@ -6,25 +6,25 @@ from .models import Order, OrderItem
 class OrderItemAdminInline(admin.TabularInline):
     """ Allow inline editing for OrderItems """
     model = OrderItem
-    readonly_fields = ('total')
+    readonly_fields = ['orderitem_total']
 
 
 class OrderAdmin(admin.ModelAdmin):
     """ Configure Order admin interface """
-    inlines = (OrderItemAdminInline)
+    inlines = [OrderItemAdminInline]
 
-    readonly_fields = ('order_number', 'date', 'total')
+    readonly_fields = ('order_id', 'date', 'total')
 
     fields = (
-        'order_number', 'date', 'full_name', 'email', 'phone',
+        'order_id', 'date', 'full_name', 'email', 'phone',
         'country', 'postcode', 'city', 'street_address1',
         'street_address2', 'county', 'total'
     )
 
     list_display = (
-        'order_number', 'date', 'full_name', 'total'
+        'order_id', 'date', 'full_name', 'total'
     )
 
-    ordering = ('-date')
+    ordering = ['-date']
 
 admin.site.register(Order, OrderAdmin)

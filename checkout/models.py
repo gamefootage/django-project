@@ -1,13 +1,14 @@
 """ Configure checkout models """
 import uuid
 from django.db import models
+from django.db.models import Sum
 
 from products.models import Product
 
 
 class Order(models.Model):
     """ Define Order model """
-    order_number = models.CharField(max_length=32, null=False, editable=False)
+    order_id = models.CharField(max_length=32, null=False, editable=False)
     full_name = models.CharField(max_length=50, null=False, blank=False)
     email = models.EmailField(max_length=254, null=False, blank=False)
     phone = models.CharField(max_length=20, null=False, blank=False)
@@ -21,7 +22,13 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, \
         null=False, default=0)
 
-    def _generate_order_number(self):
+    def update_total(self):
+        """ Update the total to match the order items combined """
+        self.total = self.orderitems.aggregate(
+            Sum('orderitem__total')
+        )['orderitem_total__sum']
+
+    def _generate_order_id(self):
         """ Generate an order number using UUID """
         return uuid.uuid4().hex.upper()
 
@@ -30,12 +37,12 @@ class Order(models.Model):
         Override original save method to set the order number
         if it hasn't been set already.
         """
-        if not self.order_number:
-            self.order_number = self._generate_order_number()
+        if not self.order_id:
+            self.order_id = self._generate_order_id()
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.order_number
+        return self.order_id
 
 
 class OrderItem(models.Model):
@@ -50,7 +57,6 @@ class OrderItem(models.Model):
         null=False, blank=False, editable=False)
 
     def save(self, *args, **kwargs):
-        # pylint: disable=E1101
         """
         Override the original save method to set the lineitem total
         and update the order total.
@@ -59,6 +65,5 @@ class OrderItem(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        # pylint: disable=E1101
         return f'ID {self.product.pk} on order \
-            {self.order.order_number}'
+            {self.order.order_id}'
