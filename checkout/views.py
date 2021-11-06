@@ -21,7 +21,7 @@ def cache_checkout_data(request):
         print(pid)
         stripe.api_key = settings.STRIPE_API_KEY
         stripe.PaymentIntent.modify(pid, metadata={
-            'bag': json.dumps(request.session.get('cart', {})),
+            'cart': json.dumps(request.session.get('cart', {})),
             'save_info': request.POST.get('save_info'),
             'username': request.user,
         })
@@ -72,7 +72,7 @@ def checkout(request):
                                 found on our database."
                         )
                         order.delete()
-                        return redirect(reverse('view_bag'))
+                        return redirect(reverse('view_cart'))
 
             request.session['save-info'] = 'save-info' in request.POST
             print(order.order_id)
