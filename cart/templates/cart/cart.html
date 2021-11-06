@@ -34,8 +34,8 @@
                                     </div>
                                     <div class="col text-center">
                                         <select name="{{ item.pk }}_quantity" id="{{ item.pk }}_quantity">
-                                            {% for size, value in item.product.quantity.items %}
-                                                <option value="{{ value }}" {% if value == item.quantity %}selected{% endif %} >{{ value }}</option>
+                                            {% for value in item.product.quantity_options|make_list %}
+                                                <option value="{{value}}">{{value}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>

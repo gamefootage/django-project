@@ -5,6 +5,7 @@ from .models import Product, Collection
 
 class ProductAdmin(admin.ModelAdmin):
     """ Configure options for Products model on admin page """
+    readonly_fields = ('quantity_options', 'pk')
     list_display = (
         'pk',
         'name',

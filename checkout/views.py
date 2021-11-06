@@ -87,19 +87,19 @@ def checkout(request):
 
     return render(request, 'checkout/checkout.html', context)
 
-    def checkout_success(request, order_id):
-        """ Render success page after successful checkout """
-        save_info = request.session.get('save-info')
-        order = get_object_or_404(Order, order_id=order_id)
-        messages.success(request,
-            f'Order completed! Order No: {order_id}. A confirmation \
-                email has been sent to {order.email}'
-        )
+def checkout_success(request, order_id):
+    """ Render success page after successful checkout """
+    save_info = request.session.get('save-info')
+    order = get_object_or_404(Order, order_id=order_id)
+    messages.success(request,
+        f'Order completed! Order No: {order_id}. A confirmation \
+            email has been sent to {order.email}'
+    )
 
-        if 'cart' in request.session:
-            del request.session['cart']
+    if 'cart' in request.session:
+        del request.session['cart']
 
-        context = {
-            'order': order
-        }
-        return render(request, 'checkout/checkout_success', context)
+    context = {
+        'order': order
+    }
+    return render(request, 'checkout/checkout_success', context)
