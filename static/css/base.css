@@ -11,7 +11,7 @@ body {
 .sidebar {
     position: fixed;
     top: 106px;
-    padding-bottom: 116px;
+    padding-bottom: 17rem;
     overflow: scroll;
 }
 

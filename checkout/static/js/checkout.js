@@ -16,16 +16,8 @@ paymentElement.mount('#payment-element');
 const form = $("#payment-form");
 
 (paymentElement).on('change', function(event) {
-    const errorDiv = $('#error-message');
     if (event.error) {
-        let html = `
-            <span class="icon" role="alert">
-                <i class="bi bi-exclamation-diamond-fill"></i>
-            </span>
-            <span>${result.error.message}</span>`;
-        $(errorDiv).html(html);
-    } else {
-        $(errorDiv).text('');
+        showMessage(event.error.message);
     }
 });
 
