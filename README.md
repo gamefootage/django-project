@@ -171,6 +171,10 @@ In the cart section of the webstore, there is an option for the user to "amend" 
 
 In the NAVBAR, the user can use the search bar, to narrow down the items, according the the keyword entered. If no keyword is entered, all products will be displayed. 
 
+## Known Issue
+
+#### Google needs a privay policy to expand past a test account which I don't have, so I will have to add google emails as test emails for them to work
+
 ## Deployment
 
 ### Local Deployment
