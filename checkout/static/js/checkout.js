@@ -15,6 +15,20 @@ paymentElement.mount('#payment-element');
 
 const form = $("#payment-form");
 
+(paymentElement).on('change', function(event) {
+    const errorDiv = $('#error-message');
+    if (event.error) {
+        let html = `
+            <span class="icon" role="alert">
+                <i class="bi bi-exclamation-diamond-fill"></i>
+            </span>
+            <span>${result.error.message}</span>`;
+        $(errorDiv).html(html);
+    } else {
+        $(errorDiv).text('');
+    }
+});
+
 
 $(form).on('submit', function(ev) {
     ev.preventDefault();
@@ -23,15 +37,15 @@ $(form).on('submit', function(ev) {
     $('#payment-form').fadeToggle(100);
     $('#loading').fadeToggle(100);
 
-    var saveInfo = Boolean($('#id-save-info').attr('checked'));
+    let saveInfo = Boolean($('#id-save-info').attr('checked'));
     // From using {% csrf_token %} in the form
-    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-    var postData = {
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    let postData = {
         'csrfmiddlewaretoken': csrfToken,
         'client_secret': clientSecret,
         'save_info': saveInfo,
     };
-    var url = '/checkout/cache_checkout_data/';
+    let url = '/checkout/cache_checkout_data/';
 
     $.post(url, postData).done(function () {
         stripe.confirmCardPayment(clientSecret, {
@@ -64,13 +78,11 @@ $(form).on('submit', function(ev) {
             },
         }).then(function(result) {
             if (result.error) {
-                var errorDiv = $('#error-message');
-                var html = `
-                    <span class="icon" role="alert">
-                        <i class="bi bi-exclamation-diamond-fill"></i>
-                    </span>
-                    <span>${result.error.message}</span>`;
-                $(errorDiv).html(html);
+                if (error.type === "card_error" || error.type === "validation_error") {
+                    showMessage(error.message);
+                } else {
+                    showMessage("An unexpected error occured.");
+                }
                 $('#payment-form').fadeToggle(100);
                 $('#loading').fadeToggle(100);
                 paymentElement.update({ 'disabled': false});
@@ -86,3 +98,13 @@ $(form).on('submit', function(ev) {
         location.reload();
     })
 });
+
+function showMessage(messageText) {
+    const messageContainer = document.querySelector("#payment-message");
+    messageContainer.classList.remove("hidden");
+    messageContainer.textContent = messageText;
+    setTimeout(function () {
+        messageContainer.classList.add("hidden");
+        messageText.textContent = "";
+    }, 4000);
+}

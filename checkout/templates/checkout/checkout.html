@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block content %}
+<div id="loading" class="justify-content-center align-items-center" style="display: none !important;">
+    <div class="spinner-grow text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+</div>
     <div class="container-fluid">   
         <div class="row">
             <div class="col-4 sidebar pt-5 border-end border-dark vh-100">
@@ -14,7 +19,6 @@
                     {% csrf_token %}
                     {% crispy order_form %}
                 </form>
-                <div class="spinner hidden" id="spinner"></div>
             </div>
             <div class="col-8 pt-5 offset-4">
                 <h5>Order Summary</h5>
