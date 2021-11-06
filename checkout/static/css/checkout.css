@@ -27,3 +27,7 @@ legend {
     height: 5rem !important;
     width: 5rem !important;
 }
+
+#checkout-table td {
+    vertical-align: middle;
+}

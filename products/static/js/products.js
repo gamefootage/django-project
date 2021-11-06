@@ -28,16 +28,25 @@ $(document).ready(function() {
         let filterType = $selectedFilter.attr("name");
         let filterField = $selectedFilter.text();
         let $inputs = $(".filter-menu").find(`.${$selectedFilter.val()}`).find("input");
+        const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+        let postData = {}; 
 
         if(filterType === "range") {
-            let filterKey = `${filterField}__range`;
-            currentUrl.searchParams.delete(filterKey);
-
             let rangeArr = [];
-            $inputs.each((i, el) => currentUrl.searchParams.append(filterKey, $(el).val()));
-
-            window.location.replace(currentUrl);
+            $inputs.each((i, el) => rangeArr.push($(el).val()));
+            let filterKey = `${filterField.toLowerCase()}__range`;
+            postData = {
+                "filter_type": filterType,
+                "filter_field": filterField,
+                "filter_key": filterKey,
+                "filter_values": rangeArr,
+                'csrfmiddlewaretoken': csrfToken,
+            }; 
         }
+        $.post("/products/", postData)
+        .fail(function() {
+            location.reload();
+        })
     });
 
     $(".remove-filter").on("click", function() {

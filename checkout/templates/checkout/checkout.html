@@ -13,41 +13,50 @@
 </div>
     <div class="container-fluid">   
         <div class="row">
-            <div class="col-4 sidebar pt-5 border-end border-dark vh-100">
+            <div class="col-5">
                 <h3 class="border-top border-bottom py-2 mb-0">Billing Details</h3>
                 <form action="{% url 'checkout' %}" method="POST" id="payment-form">
                     {% csrf_token %}
                     {% crispy order_form %}
                 </form>
             </div>
-            <div class="col-8 pt-5 offset-4">
+            <div class="col-7 pt-5">
                 <h5>Order Summary</h5>
                 <hr>
-                <ul class="list-group mt-5">
-                    {% for item in cart_items %}
-                        <div class="list-group-item py-3">
-                            <div class="row pb-3">
-                                <div class="col-10">
-                                    <span>Product Info</span>
-                                </div>
-                                <div class="col text-center me-3">Price</div>
-                                <div class="col text-center me-3">Quantity</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-10">
-                                    <img class="me-4" src="{{item.product.image_url}}" alt="{{product.display_name}}" height="50" width="50">
-                                    <a href="{% url 'get_product' item.product.pk %}" class="me-5 flex-fill text-decoration-none">{{ item.product.display_name }}</a>
-                                </div>
-                                <div class="col text-center">
-                                    €{{ item.product.price }}
-                                </div>
-                                <div class="col text-center">
-                                    {{ item.quantity }}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </ul>
+                <div class="row">
+                    <div class="col-12">
+
+                        <table class="table" id="checkout-table">
+                            <thead class="pb-1">
+                                <th scope="col" colspan="2">Product Info</th>
+                                <th scope="col">Price</th>
+                                <th class="text-end" scope="col">Quantity</th>
+                                <th scope="col">Subtotal</th>
+                            </thead>
+                            <tbody class="pt-3">
+                                {% for item in cart_items %}
+                                        <tr class="pt-5">
+                                            <td>
+                                                <img class="me-4" src="{{item.product.image_url}}" alt="{{product.display_name}}" height="200" width="200">
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'get_product' item.product.pk %}" class="me-5 flex-fill text-decoration-none">{{ item.product.display_name }}</a>
+                                            </td>
+                                            <td>
+                                                €{{ item.product.price }}
+                                            </td>
+                                            <td class="text-end">
+                                                {{ item.quantity }}
+                                            </td>
+                                            <td class="text-end">
+                                                <strong>€{{ item.item_total }}</strong>
+                                            </td>
+                                        </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <a href="{% url 'view_cart' %}" class="btn btn-danger mt-4 float-end"><i class="bi bi-arrow-left-circle"></i> Go Back and edit cart</a>
             </div>
         </div>

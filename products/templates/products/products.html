@@ -13,7 +13,7 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3 sidebar pt-5">
+            <div class="col-3 sidebar pt-5 align-self-stretch position-fixed">
                 <select id="filter-select" class="form-select mb-5" aria-label="Default select example">
                     <option value="reset" selected>Choose filter property...</option>
                     {% for key, type in filters %}
@@ -101,4 +101,5 @@
             </div>
         </div>
     </div>
+    {% csrf_token %}
 {% endblock %}

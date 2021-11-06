@@ -37,89 +37,101 @@
         <title>Jersey Rewind {% block extra_title %}{% endblock%}</title>
     </head>
     <body>
-        <header class="fixed-top">
-            {% with request.resolver_match.url_name as url_name %}
-                <nav class="navbar navbar-light bg-light fixed-top navbar-expand-lg">
-                    <div class="container-fluid">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <a class="navbar-brand" href="/">
-                            <img src="{% static 'images/jersey-rewind-logo.png'%}" alt="Jersey Rewind logo" width="80" height="80">
-                        </a>
-                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                            <div class="offcanvas-header justify-content-center">
-                                <h5 class="offcanvas-title ms-auto" id="offcanvasNavbarLabel">
-                                    <img src="{% static 'images/jersey-rewind-logo.png'%}" alt="Jersey Rewind logo" width="100" height="100">
-                                </h5>
-                                <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body px-lg-5">
-                                <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                                    <li class="nav-item">
-                                        <a class="nav-link {% if url_name == 'homepage' %}active{% endif %}" aria-current="page" href="{% url 'homepage' %}">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link {% if url_name == 'products' %}active{% endif %}" aria-current="page" href="{% url 'products' %}">All Products</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Collections
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                                            <li><a class="dropdown-item" href="">NBA Collection</a></li>
-                                            <li><a class="dropdown-item" href="">NFL Collection</a></li>
+        <wrapper class="d-flex flex-column">
+            <nav class="navbar navbar-light bg-light navbar-expand-lg">
+                {% with request.resolver_match.url_name as url_name %}
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        <img src="{% static 'images/jersey-rewind-logo.png'%}" alt="Jersey Rewind logo" width="80" height="80">
+                    </a>
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <div class="offcanvas-header justify-content-center">
+                            <h5 class="offcanvas-title ms-auto" id="offcanvasNavbarLabel">
+                                <img src="{% static 'images/jersey-rewind-logo.png'%}" alt="Jersey Rewind logo" width="100" height="100">
+                            </h5>
+                            <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body px-lg-5">
+                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                                <li class="nav-item">
+                                    <a class="nav-link {% if url_name == 'homepage' %}active{% endif %}" aria-current="page" href="{% url 'homepage' %}">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {% if url_name == 'products' %}active{% endif %}" aria-current="page" href="{% url 'products' %}">All Products</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Collections
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+                                        <li><a class="dropdown-item" href="{% url 'products' %}?collection__iexact=1">NBA Collection</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'products' %}?collection__iexact=2">NFL Collection</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'products' %}?collection__iexact=3">Football Collection</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="{% url 'products' %}">See All Collections</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <form method="GET" action="{% url 'products' %}" class="d-flex me-3 mt-lg-0 mt-2">
+                                <div class="input-group">
+                                    <input name="q" type="text" class="form-control" value="{{ search_term }}" placeholder="Search" />
+                                    <button class="input-group-text">
+                                        <i class="bi bi-search form-control-feedback"></i>
+                                    </button>
+                                </div>                                                     
+                            </form>
+                            <ul class="navbar-nav justify-content-start me-5">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="" id="account-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        My Account
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="account-dropdown">
+                                        {% if request.user.is_authenticated %}
+                                            {% if request.user.is_superuser %}
+                                                <li><a href="{% url 'products' %}" class="dropdown-item">Product Management</a></li>
+                                            {% endif %}
+                                            <li><a href="{% url 'account_email' %}" class="dropdown-item">My Profile</a></li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
-                                            <li><a class="dropdown-item" href="">See All Collections</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <form method="GET" action="{% url 'products' %}" class="d-flex me-3 mt-lg-0 mt-2">
-                                    <div class="input-group">
-                                        <input name="q" type="text" class="form-control" value="{{ search_term }}" placeholder="Search" />
-                                        <button class="input-group-text">
-                                            <i class="bi bi-search form-control-feedback"></i>
-                                        </button>
-                                    </div>                                                     
-                                </form>
-                                <ul class="navbar-nav justify-content-start me-5">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="" id="account-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            My Account
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="account-dropdown">
-                                            {% if request.user.is_authenticated %}
-                                                {% if request.user.is_superuser %}
-                                                    <li><a href="{% url 'products' %}" class="dropdown-item">Product Management</a></li>
-                                                {% endif %}
-                                                <li><a href="{% url 'account_email' %}" class="dropdown-item">My Profile</a></li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li><a class="dropdown-item" href="{% url 'account_logout'%}">Log out</a></li>
-                                            {% else %}
-                                                <li><a class="dropdown-item" href="{% url 'account_signup'%}">Register</a></li>
-                                                <li><a class="dropdown-item" href="{% url 'account_login'%}">Login</a></li>
-                                            {% endif%}
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <a role="button" href="{% url 'view_cart' %}" class="btn p-0 text-dark position-relative">
-                                    <i class="bi bi-basket2-fill cart-logo"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                                        {{ product_count }}
-                                        <span class="visually-hidden">product count</span>
-                                    </span>
-                                </a>
-                            </div>
+                                            <li><a class="dropdown-item" href="{% url 'account_logout'%}">Log out</a></li>
+                                        {% else %}
+                                            <li><a class="dropdown-item" href="{% url 'account_signup'%}">Register</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'account_login'%}">Login</a></li>
+                                        {% endif%}
+                                    </ul>
+                                </li>
+                            </ul>
+                            <a role="button" href="{% url 'view_cart' %}" class="btn p-0 text-dark position-relative">
+                                <i class="bi bi-basket2-fill cart-logo"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                                    {{ product_count }}
+                                    <span class="visually-hidden">product count</span>
+                                </span>
+                            </a>
                         </div>
                     </div>
-                </nav>
-            {% endwith %}
-        </header>
-
+                </div>
+                {% endwith %}
+            </nav>
+            <main class="flex-fill">
+                {% block page_header %}
+                {% endblock %}
+        
+                {% block content %}
+                {% endblock %}
+            </main>
+            <footer class="bg-dark text-white p-5">
+                <span>&copy; Ben Kelly - {% now "Y" %}</span>
+                <a class="text-decoration-none float-end" href="mailto:benskelly10@gmail.com">Contact Us</a>
+            </footer>
+        </wrapper>
+        
         {% if messages %}
             <div class="toast-container position-fixed">
                 {% for message in messages %}
@@ -137,14 +149,6 @@
                 {% endfor %}
             </div>
         {% endif %}
-
-        <div class="page-content {% block container_classes %}{% endblock %}">
-            {% block page_header %}
-            {% endblock %}
-    
-            {% block content %}
-            {% endblock %}
-        </div>
 
         {% block postload_js %}
             <script>

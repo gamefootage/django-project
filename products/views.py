@@ -31,33 +31,31 @@ def get_all_products(request, *args, query_str=''):
         # if filter_type == "options":
 
 
+# if request.GET:
+#         for key in request.GET:
+#             if "__" in key:
+#                 val = request.GET.getlist(key)
+#                 val[:] = [int(x) for x in val]
+#                 active_filters.append(
+#                     [key.split("__")[0], key.split("__")[1], val]
+#                 )
+#                 obj = {}
+#                 obj[key] = val
+#                 query = Q(**obj)
+#                 products = products.filter(query)
 
-    if request.GET:
-        for key in request.GET:
-            if "__range" in key:
-                val = request.GET.getlist(key)
-                val[:] = [int(x) for x in val]
-                active_filters.append(
-                    [key.split("__")[0], key.split("__")[1], val]
-                )
-                obj = {}
-                obj[key] = val
-                query = Q(**obj)
-                products = products.filter(query)
+    if request.POST:
+        for key in request.POST:
+            filter_type = request.POST.get("filter_type")
+            filter_field = request.POST.get("filter_field")
+            filter_key = request.POST.get("filter_key")
+            filter_values = request.POST.get("filter_values")
+            obj = {}
+            obj[filter_key] = filter_values
+            query = Q(**obj)
+            products = products.filter(query)
 
-
-        # if 'collection' in request.GET:
-        #     collection_pk = request.GET['collection']
-        #     if not collection_pk or not collection_pk.isnumeric():
-        #         if query:
-        #             return redirect(
-        #                 reverse('products'),
-        #                 kwargs={'query_str': query}
-        #             )
-        #         else:
-        #             return redirect(reverse('products'))
-
-        #     products = products.filter(collection=collection_pk)
+    else:
 
         if 'q' in request.GET:
             query = request.GET['q']
