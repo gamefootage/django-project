@@ -24,8 +24,6 @@ if os.path.isfile(dotenv_file):
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-APPEND_SLASH= False
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
