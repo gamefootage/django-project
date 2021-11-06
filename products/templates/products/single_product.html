@@ -24,25 +24,25 @@
                             <h5 class="text-black-50 text-end d-inline">€{{ product.price }}</h5>
                         </div>
                     </div>
-                    <div class="align-self-center">
-                        <input type="radio" class="btn-check" name="product-size" id="sze-small" autocomplete="off" {% if product.quantity.s <= 0 %}disabled{% endif %}>
-                        <label class="btn btn-outline-info px-5 py-3 text-dark {% if product.quantity.s <= 0 %}bg-secondary opacity-25{% endif %}" for="sze-small">Small</label>
-    
-                        <input type="radio" class="btn-check" name="product-size" id="sze-medium" autocomplete="off" {% if product.quantity.m <= 0 %}disabled{% endif %}>
-                        <label class="btn btn-outline-info px-5 py-3 text-dark {% if product.quantity.m <= 0 %}bg-secondary opacity-25{% endif %}" for="sze-medium">Medium</label>
-                        
-                        <input type="radio" class="btn-check" name="product-size" id="sze-large" autocomplete="off" {% if product.quantity.l <= 0 %}disabled{% endif %}>
-                        <label class="btn btn-outline-info px-5 py-3 text-dark {% if product.quantity.l <= 0 %}bg-secondary opacity-25{% endif %}" for="sze-large">Large</label>
-                    </div>
-                    <div class="d-flex">
-                        <form action="{% url 'add_to_cart' product.pk %}" method="POST">
+                    <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                        <div class="align-self-center">
+                            <input type="radio" class="btn-check" name="size" id="sze-small" value="s" autocomplete="off" {% if product.quantity.s <= 0 %}disabled{% endif %}>
+                            <label class="btn btn-outline-info px-5 py-3 text-dark {% if product.quantity.s <= 0 %}bg-secondary opacity-25{% endif %}" for="sze-small">Small</label>
+        
+                            <input type="radio" class="btn-check" name="size" id="sze-medium" value="m" autocomplete="off" {% if product.quantity.m <= 0 %}disabled{% endif %}>
+                            <label class="btn btn-outline-info px-5 py-3 text-dark {% if product.quantity.m <= 0 %}bg-secondary opacity-25{% endif %}" for="sze-medium">Medium</label>
+                            
+                            <input type="radio" class="btn-check" name="size" id="sze-large" value="l" autocomplete="off" {% if product.quantity.l <= 0 %}disabled{% endif %}>
+                            <label class="btn btn-outline-info px-5 py-3 text-dark {% if product.quantity.l <= 0 %}bg-secondary opacity-25{% endif %}" for="sze-large">Large</label>
+                        </div>
+                        <div class="d-flex">
                             {% csrf_token %}
                             <button type="submit" class="ms-auto btn btn-primary p-3 align-self-end">
                                 Add To Cart <i class="bi bi-basket3"></i>
                             </button>
                             <input name="redirect_url" value="{{request.path}}" type="text" hidden>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

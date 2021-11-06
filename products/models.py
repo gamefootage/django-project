@@ -40,26 +40,11 @@ class Product(models.Model):
     image_url = models.URLField(max_length=1024, null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     quantity = models.JSONField(validators=[validate_quantity])
-    quantity_options = models.IntegerField(null=True, blank=True)
 
     year = models.PositiveSmallIntegerField(
         choices=year_choices(datetime.date.today().year+1),
         default=datetime.date.today().year
     )
-
-    def save(self, *args, **kwargs):
-        """
-        Override original save method to set the order number
-        if it hasn't been set already.
-        """
-        total_quantity = 0
-        quantity_options = ''
-        for key, value in self.quantity.items():
-            total_quantity += value
-        for i in range(total_quantity):
-            quantity_options += str(i)
-        self.quantity_options = int(quantity_options)
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return str(self.name)

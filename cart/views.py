@@ -21,14 +21,29 @@ def add_to_cart(request, product_id):
             request, "Could not find a value for redirect URL in your request"
         )
         return redirect(reverse('view_cart'))
-    print(type(redirect_url))
     current_cart = request.session.get('cart', {})
     product = get_object_or_404(Product, pk=product_id)
+    size = request.POST.get('size')
+
+    if not size:
+        messages.error(request,
+        "Please specify a size before adding to cart")
+        return redirect(redirect_url)
 
     if product_id in list(current_cart.keys()):
-        current_cart[product_id] += 1
+        if size in list(current_cart[product_id]):
+            current_cart[product_id][size] += 1
+        else:
+            current_cart[product_id][size] = 1
+
+        if current_cart[product_id][size] > product.quantity[size]:
+            messages.error(request,
+            f"Could not add item. There are only \
+                {product.quantity[size]} items in this size left.")
+            return redirect(redirect_url)
     else:
-        current_cart[product_id] = 1
+        current_cart[product_id] = {}
+        current_cart[product_id][size] = 1
 
     if product:
         request.session['cart'] = current_cart
@@ -59,3 +74,49 @@ def remove_from_cart(request, product_id):
 
     request.session['cart'] = current_cart
     return redirect(redirect_url)
+
+def edit_cart_item(request, product_id):
+    """ Edit an order item in the cart """
+    current_cart = request.session.get('cart', {})
+    product = get_object_or_404(Product, pk=product_id)
+    size = request.POST.get('size')
+    prev_size = request.POST.get('prev_size')
+    quantity = request.POST.get('quantity', '')
+
+    if size:
+        if prev_size:
+            if size in list(current_cart[product_id].keys()):
+                add_on = current_cart[product_id][prev_size]
+                current_cart[product_id][size] += add_on
+
+            else:
+                current_cart[product_id][size] = {}
+                current_cart[product_id][size] = \
+                    current_cart[product_id][prev_size]
+
+            del current_cart[product_id][prev_size]
+        else:
+            current_cart[product_id][size] = int(quantity)
+    else:
+        messages.error(request, "No size specified")
+        return redirect(reverse('view_cart'))
+
+    print(current_cart)
+    print(product.quantity)
+    if current_cart[product_id][size] > product.quantity[size]:
+        messages.warning(request,
+            f"""
+            There is not enough items in that size available.
+            Quantity set to {product.quantity[size]} instead
+            """)
+        current_cart[product_id][size] = product.quantity[size]
+
+    if prev_size:
+        updated_field = 'Size'
+    else:
+        updated_field = 'Quantity'
+
+    request.session['cart'] = current_cart
+    messages.success(request,
+    f"{updated_field} of {product.display_name} updated")
+    return redirect(reverse('view_cart'))
