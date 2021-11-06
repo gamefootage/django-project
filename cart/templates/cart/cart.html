@@ -33,7 +33,11 @@
                                         €{{ item.product.price }}
                                     </div>
                                     <div class="col text-center">
-                                        {{ item.quantity }}
+                                        <select name="{{ item.pk }}_quantity" id="{{ item.pk }}_quantity">
+                                            {% for size, value in item.product.quantity.items %}
+                                                <option value="{{ value }}" {% if value == item.quantity %}selected{% endif %} >{{ value }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                     <div class="col text-center">
                                         <form method="POST" action="{% url 'remove_from_cart' item.product.pk %}">

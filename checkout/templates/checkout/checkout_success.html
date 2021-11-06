@@ -1,25 +1,20 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
-{% endblock %}
+{% block extra_css %}{% endblock %}
 
 {% block content %}
     <div class="container-fluid">   
         <div class="row">
-            <div class="col-4 sidebar pt-5 border-end border-dark vh-100">
-                <h3 class="border-top border-bottom py-2 mb-0">Billing Details</h3>
-                <form action="{% url 'checkout' %}" method="POST" id="payment-form">
-                    {% csrf_token %}
-                    {% crispy order_form %}
-                </form>
+            <div class="col-7 sidebar pt-5 border-end border-dark vh-100">
+                <h3 class="border-top border-bottom py-2 mb-0">Order Details</h3>
+                {{}}
             </div>
-            <div class="col-8 pt-5 offset-4">
-                <h5>Order Summary</h5>
-                <hr>
+            <div class="col-5 pt-5 offset-7 text-center">
+                <h4>Thank You! (from Jersey Rewind)</h4>
+                <p>Below is your order information. Check your inbox for <strong>{{ order.email }}</strong> for a confirmation of your order.</p>
                 <ul class="list-group mt-5">
-                    {% for item in cart_items %}
+                    {% for item in orderitems %}
                         <div class="list-group-item py-3">
                             <div class="row pb-3">
                                 <div class="col-10">
@@ -27,6 +22,7 @@
                                 </div>
                                 <div class="col text-center me-3">Price</div>
                                 <div class="col text-center me-3">Quantity</div>
+                                <div class="col"></div>
                             </div>
                             <div class="row">
                                 <div class="col-10">
@@ -39,19 +35,20 @@
                                 <div class="col text-center">
                                     {{ item.quantity }}
                                 </div>
+                                <div class="col text-center">
+                                    <form method="POST" action="{% url 'remove_from_cart' item.product.pk %}">
+                                        {% csrf_token %}
+                                        <input name="redirect_url" value="{{request.path}}" type="text" hidden>
+                                        <button type="submit" class="btn p-0">
+                                            <i class="bi bi-trash2-fill"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
                 </ul>
-                <a href="{% url 'view_cart' %}" class="btn btn-danger mt-4 float-end"><i class="bi bi-arrow-left-circle"></i> Go Back and edit cart</a>
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block postload_js %}
-    {{ block.super }}
-    {{ stripe_public_key|json_script:"strp-public-key" }}
-    {{ client_secret|json_script:"strp-client-secret" }}
-    <script src="{% static 'js/checkout.js' %}"></script>
 {% endblock %}

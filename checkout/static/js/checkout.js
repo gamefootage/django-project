@@ -6,16 +6,6 @@ const options = {
     clientSecret: clientSecret,
     appearance: {
         theme: 'flat',
-        variables: {
-            colorPrimary: '#0570de',
-            colorBackground: '#ffffff',
-            colorText: '#30313d',
-            colorDanger: '#df1b41',
-            fontFamily: 'Ideal Sans, system-ui, sans-serif',
-            spacingUnit: '2px',
-            borderRadius: '4px',
-            // See all possible variables below
-        }
     }
 };
 const elements = stripe.elements(options);
@@ -31,7 +21,7 @@ $("#payment-form").on('submit', async (event) => {
     //`Elements` instance that was used to create the Payment Element
     elements,
     confirmParams: {
-      return_url: 'https://jersey-rewind.herokuapp.com/',
+      return_url: 'http://127.0.0.1:8000/checkout/',
     },
   });
 

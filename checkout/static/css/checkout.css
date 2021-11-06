@@ -3,3 +3,8 @@ legend {
     color: black;
     padding: .5rem;
 }
+
+.stripe-style-input {
+    background: #f5f5f5;
+    border-radius: 0.75rem;
+}

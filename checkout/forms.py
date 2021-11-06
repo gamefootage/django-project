@@ -1,6 +1,6 @@
 """ Define forms in checkout app """
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Fieldset
+from crispy_forms.layout import Layout, Div, Fieldset, HTML, Submit
 from django import forms
 from .models import Order
 
@@ -49,14 +49,19 @@ class OrderForm(forms.ModelForm):
                     css_class = 'col'
                 ),
                 Div(
-                    'email',
+                    Div(
+                        Div(
+                            'email',
+                            css_class = 'col'
+                        ),
+                        Div(
+                            'phone',
+                            css_class = 'col'
+                        ),
+                        css_class = 'row'
+                    ),
                     css_class = 'col'
-                ),
-                Div(
-                    'phone',
-                    css_class = 'col'
-                ),
-                css_class = 'row'
+                )
             ),
             Fieldset(
                 'Delivery Details',
@@ -65,18 +70,19 @@ class OrderForm(forms.ModelForm):
                         Div(
                             'street_address1',
                             css_class="col"
-                        ),
+                        )
+                    ),
+                    Div(
                         Div(
                             'street_address2',
                             css_class="col"
-                        ),
+                        )
+                    ),
+                    Div(
                         Div(
                             'city',
                             css_class="col"
                         ),
-                        css_class="row"
-                    ),
-                    Div(
                         Div(
                             'county',
                             css_class="col"
@@ -95,4 +101,35 @@ class OrderForm(forms.ModelForm):
                 ),
                 css_class="row"
             ),
+            HTML("""
+                <div class="row">
+                    <div class="col-12 text-end">
+                        {% if user.is_authenticated %}
+                            <label for="id-save-info">
+                            Save this delivery information to my profile
+                            </label>
+                            <input class="stripe-style-input ms-2" type="checkbox" id="id-save-info" name="save-info" checked>
+                        {% else %}
+                            <label class="form-check-label" for="id-save-info">
+                                <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
+                                <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
+                            </label>
+                        {% endif %}
+                    </div>
+                </div>
+                <fieldset class="row">
+                    <legend>Payment</legend>
+                    <div class="col-12 px-5">
+                        <!-- Stripe Card Element -->
+                        <div class="mb-3" id="payment-element"></div>
+
+                        <!-- Stripe Errors -->
+                        <div class="mb-3 text-danger" id="error-message" role="alert"></div>
+                    </div>
+                </fieldset>
+            """),
+            Submit(
+                'submit-payment', 'Pay €{{cart_total}}',
+                css_class="btn btn-success float-end"
+            )
         )
