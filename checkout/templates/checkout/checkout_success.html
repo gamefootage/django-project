@@ -8,13 +8,12 @@
         <div class="row">
             <div class="col-7 sidebar pt-5 border-end border-dark vh-100">
                 <h3 class="border-top border-bottom py-2 mb-0">Order Details</h3>
-                {{}}
             </div>
             <div class="col-5 pt-5 offset-7 text-center">
                 <h4>Thank You! (from Jersey Rewind)</h4>
-                <p>Below is your order information. Check your inbox for <strong>{{ order.email }}</strong> for a confirmation of your order.</p>
+                <p>Here is your order information. Check your inbox for <strong>{{ order.email }}</strong> for a confirmation of your order.</p>
                 <ul class="list-group mt-5">
-                    {% for item in orderitems %}
+                    {% for item in order.orderitems.all %}
                         <div class="list-group-item py-3">
                             <div class="row pb-3">
                                 <div class="col-10">
@@ -22,7 +21,6 @@
                                 </div>
                                 <div class="col text-center me-3">Price</div>
                                 <div class="col text-center me-3">Quantity</div>
-                                <div class="col"></div>
                             </div>
                             <div class="row">
                                 <div class="col-10">
@@ -34,15 +32,6 @@
                                 </div>
                                 <div class="col text-center">
                                     {{ item.quantity }}
-                                </div>
-                                <div class="col text-center">
-                                    <form method="POST" action="{% url 'remove_from_cart' item.product.pk %}">
-                                        {% csrf_token %}
-                                        <input name="redirect_url" value="{{request.path}}" type="text" hidden>
-                                        <button type="submit" class="btn p-0">
-                                            <i class="bi bi-trash2-fill"></i>
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

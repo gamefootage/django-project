@@ -130,6 +130,7 @@ class OrderForm(forms.ModelForm):
             """),
             Submit(
                 'submit-payment', 'Pay €{{cart_total}}',
-                css_class="btn btn-success float-end"
+                css_class="btn btn-success float-end",
+                css_id="submit-payment"
             )
         )

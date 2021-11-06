@@ -25,7 +25,7 @@ class Order(models.Model):
     def update_total(self):
         """ Update the total to match the order items combined """
         self.total = self.orderitems.aggregate(
-            Sum('orderitem__total')
+            Sum('orderitem_total')
         )['orderitem_total__sum']
 
     def _generate_order_id(self):
