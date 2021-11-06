@@ -30,6 +30,7 @@ class Order(models.Model):
         self.total = self.orderitems.aggregate(
             Sum('orderitem_total')
         )['orderitem_total__sum']
+        self.save()
 
     def _generate_order_id(self):
         """ Generate an order number using UUID """
