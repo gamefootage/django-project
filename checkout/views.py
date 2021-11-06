@@ -18,7 +18,8 @@ def cache_checkout_data(request):
     """ Cache checkout data for easy reusue """
     try:
         pid = request.POST.get('client_secret').split('_secret')[0]
-        stripe.api_key = settings.STRIPE_SECRET_KEY
+        print(pid)
+        stripe.api_key = settings.STRIPE_API_KEY
         stripe.PaymentIntent.modify(pid, metadata={
             'bag': json.dumps(request.session.get('cart', {})),
             'save_info': request.POST.get('save_info'),

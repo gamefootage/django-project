@@ -124,7 +124,9 @@ class OrderForm(forms.ModelForm):
                         <div class="mb-3" id="payment-element"></div>
 
                         <!-- Stripe Errors -->
-                        <div class="mb-3 text-danger" id="error-message" role="alert"></div>
+                        <div class="mb-3 text-danger hidden" id="error-message" role="alert">
+                            
+                        </div>
                     </div>
                 </fieldset>
             """),

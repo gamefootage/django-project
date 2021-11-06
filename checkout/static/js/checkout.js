@@ -10,10 +10,10 @@ const options = {
 };
 const elements = stripe.elements(options);
 
-const paymentElement = elements.create('payment');
+const paymentElement = elements.create('card', {hidePostalCode: true});
 paymentElement.mount('#payment-element');
 
-const form = $("#payment-form");
+const form = $("#payment-form").get(0);
 
 (paymentElement).on('change', function(event) {
     if (event.error) {
@@ -42,7 +42,7 @@ $(form).on('submit', function(ev) {
     $.post(url, postData).done(function () {
         stripe.confirmCardPayment(clientSecret, {
             payment_method: {
-                card: card,
+                card: paymentElement,
                 billing_details: {
                     name: $.trim(form.full_name.value),
                     phone: $.trim(form.phone.value),
@@ -70,8 +70,8 @@ $(form).on('submit', function(ev) {
             },
         }).then(function(result) {
             if (result.error) {
-                if (error.type === "card_error" || error.type === "validation_error") {
-                    showMessage(error.message);
+                if (result.error.type === "card_error" || result.error.type === "validation_error") {
+                    showMessage(result.error.message);
                 } else {
                     showMessage("An unexpected error occured.");
                 }
@@ -92,11 +92,12 @@ $(form).on('submit', function(ev) {
 });
 
 function showMessage(messageText) {
-    const messageContainer = document.querySelector("#payment-message");
+    messageHtml = `<i class="bi bi-exclamation-diamond-fill"></i> ${messageText}`
+    const messageContainer = document.querySelector("#error-message");
     messageContainer.classList.remove("hidden");
-    messageContainer.textContent = messageText;
+    messageContainer.innerHTML = messageHtml;
     setTimeout(function () {
         messageContainer.classList.add("hidden");
-        messageText.textContent = "";
+        messageText.innerHTML = "";
     }, 4000);
 }
