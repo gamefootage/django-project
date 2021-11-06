@@ -17,7 +17,9 @@
                 <select id="filter-select" class="form-select mb-5" aria-label="Default select example">
                     <option value="reset" selected>Choose filter property...</option>
                     {% for key, type in filters %}
-                        <option id="filter-option-{{key}}" name={{type}} value="filter-{{key}}">{{key|capfirst}}</option>
+                        {% if type == "range" or type == "equals" %}
+                            <option id="filter-option-{{key}}" name={{type}} value="filter-{{key}}">{{key|capfirst}}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
                 <div class="filter-menu">
@@ -28,7 +30,7 @@
                                 <label for="max">Min</label>
                                 <div class="input-group">
                                     {% if range.field == 'price' %}
-                                    <span class="input-group-text">€</span>
+                                        <span class="input-group-text">€</span>
                                     {% endif %}
                                     <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
                                 </div>
@@ -36,25 +38,9 @@
                             <div class="col">
                                 <label for="max">Max</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">€</span>
-                                    <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    {% for option in field_ranges %}
-                        <div class="filter-{{range.field}} row gap-3" style="display: none;">
-                            <div class="col">
-                                <label for="max">Min</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">€</span>
-                                    <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <label for="max">Max</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">€</span>
+                                    {% if range.field == 'price' %}
+                                        <span class="input-group-text">€</span>
+                                    {% endif %}
                                     <input class="form-control" min="{{range.min_val}}" max="{{range.max_val}}" type="number" name="min_{{range.field}}">
                                 </div>
                             </div>
